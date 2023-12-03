@@ -35,12 +35,11 @@ std::vector<std::string> split(const std::string& str, char delim) {
 }
 
 class Tirage {
-    private:
+    public:
         int nb_red = 0;
         int nb_green = 0;
         int nb_blue = 0;
 
-    public:
         // Part du principe que la ligne match ^\s*[0-9]+.*;$
         void parseTirage(std::string& line) {
             trim_left(line);
@@ -114,6 +113,26 @@ class Game {
         int get_id_game() {
             return this->id_game;
         }
+
+        int power_set_of_fewer_cubes_possible() {
+            int max_nb_red = 0;
+            int max_nb_green = 0;
+            int max_nb_blue = 0;
+
+            for (Tirage& tirage : this->tirages) {
+                if (tirage.nb_red > max_nb_red) {
+                    max_nb_red = tirage.nb_red;
+                }
+                if (tirage.nb_green > max_nb_green) {
+                    max_nb_green = tirage.nb_green;
+                }
+                if (tirage.nb_blue > max_nb_blue) {
+                    max_nb_blue = tirage.nb_blue;
+                }
+            }
+
+            return max_nb_red * max_nb_green * max_nb_blue;
+        }
 };
 
 class Games {
@@ -140,7 +159,11 @@ class Games {
                 }                
             }
             return valid_games;
-        }        
+        }
+
+        std::vector<Game> get_games() {
+            return this->games;
+        }
 };
 
 const int MAX_RED = 12;
@@ -157,10 +180,9 @@ int main(int /*argc*/, char** argv) {
         games.push_game_str(line);
     }
 
-    std::vector<int> valid_games = games.valid_games_id();
     int sum = 0;
-    for (int id : valid_games) {
-        sum += id;
+    for (Game game : games.get_games()) {
+        sum += game.power_set_of_fewer_cubes_possible();
     }
 
     std::cout << sum << std::endl;

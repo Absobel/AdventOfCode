@@ -20,15 +20,15 @@ target/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Run with full input
-run_full: all
+full: all
 	./target/$(EXEC) $(realpath input/full.txt)
 
 # Run with test input
-run_test: all
+test: all
 	./target/$(EXEC) $(realpath input/test.txt)
 
 # Clean up
 clean:
 	rm -f target/$(EXEC) $(OBJS)
 
-.PHONY: all clean run_full run_test
+.PHONY: all clean full test
