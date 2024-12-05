@@ -10,7 +10,7 @@ parseFile path = do
 
 unzipList :: [[a]] -> [[a]]
 unzipList [] = []
-unzipList xs = [map (\(h : _) -> h) xs, map (\(_ : i : _) -> i) xs]
+unzipList xs = [map head xs, map (\(_ : i : _) -> i) xs]
 
 zipList :: [[a]] -> [[a]]
 zipList ([] : [] : _) = []
