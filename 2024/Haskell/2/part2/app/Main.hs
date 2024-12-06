@@ -21,7 +21,8 @@ mononotony l
   | sorted == l = Incr
   | reverse sorted == l = Decr
   | otherwise = No
-  where sorted = sort l
+  where
+    sorted = sort l
 
 hasRightInterval :: [Int] -> Bool
 hasRightInterval [_] = True
@@ -33,7 +34,7 @@ isSafe :: [Int] -> Bool
 isSafe l = (mononotony l /= No) && hasRightInterval l
 
 allRemoveOne :: [Int] -> [[Int]]
-allRemoveOne l = l : [take i l ++ drop (i + 1) l | i <- [0..length l -1]]
+allRemoveOne l = l : [take i l ++ drop (i + 1) l | i <- [0 .. length l - 1]]
 
 main :: IO ()
 main = print . length . filter (/= 0) . map (length . filter isSafe . allRemoveOne) . inputToList =<< parseFileLines "input/full.txt"

@@ -15,6 +15,7 @@ inputToList :: [String] -> [[Int]]
 inputToList = map (map read . words)
 
 data Monotony = No | Incr | Decr
+
 mononotony :: [Int] -> Monotony
 mononotony l
   | sort l == l = Incr
@@ -23,8 +24,9 @@ mononotony l
 
 hasRightInterval :: [Int] -> Bool
 hasRightInterval [_] = True
-hasRightInterval (h1 : h2 : t) = let s = abs (h1 - h2) in 
-    s > 0 && s < 4 && hasRightInterval (h2:t)
+hasRightInterval (h1 : h2 : t) =
+  let s = abs (h1 - h2)
+   in s > 0 && s < 4 && hasRightInterval (h2 : t)
 
 isSafe :: [Int] -> Bool
 isSafe l = (case mononotony l of No -> False; _ -> True) && hasRightInterval l

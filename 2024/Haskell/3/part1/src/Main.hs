@@ -12,12 +12,12 @@ parseMul :: Parser Mul
 parseMul = (parseStr "mul(" *> parseInt <* parseStr ",") `pp` parseInt <* parseStr ")"
 
 mul :: Mul -> Int
-mul (a, b) = a*b
+mul (a, b) = a * b
 
 consumeMuls :: String -> Either Error Int
 consumeMuls s = case consume (manyParse parseMul) s of
-        (Right lm, res) -> Right $ sum $ map mul lm
-        (Left err, res2) -> Left err
+  (Right lm, res) -> Right $ sum $ map mul lm
+  (Left err, res2) -> Left err
 
 main :: IO ()
 -- main = print . consume (parseChar 'x' `pp` parseStr "mul(" `dp` parseInt `pd` parseStr ",") =<< readFile "input/test.txt"

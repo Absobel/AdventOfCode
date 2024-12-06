@@ -35,7 +35,7 @@ instance Alternative Parser where
     case fa s of
       (Left err, res) -> fb s
       (Right a, res) -> (Right a, res)
-
+  
 -- Operations
 
 pp :: Parser a -> Parser b -> Parser (a, b)
@@ -48,7 +48,9 @@ discardToParse :: Parser a -> Parser a
 discardToParse (P fa) = P fla
   where
     fla s = case fa s of
-      (Left err, res) -> if res == "" then (Left err, res) else fla res
+      (Left err, res) ->
+         let (_:ns) = s in
+         if res == "" then (Left err, ns) else fla ns
       (Right a, res) -> (Right a, res)
 
 -- Parsers
@@ -75,6 +77,16 @@ satisfy cb = P $ \case
 consume :: Parser a -> String -> (Either Error a, String)
 consume (P fa) = fa
 
+consumeMaybe :: Parser a -> String -> Maybe a
+consumeMaybe (P fa) s = case fa s of
+  (Left _, _) -> Nothing
+  (Right x, _) -> Just x
+
+consumeRawUnsafe :: Parser a -> String -> a
+consumeRawUnsafe (P fa) s = case fa s of
+  (Right x, _) -> x
+
+
 eitherParse :: Parser a -> Parser b -> Parser (Either a b)
 eitherParse (P fa) pb = P $ \s ->
   case fa s of
@@ -85,6 +97,3 @@ eitherParse (P fa) pb = P $ \s ->
 
 isDigit :: Char -> Bool
 isDigit c = '0' <= c && c <= '9'
-
-maybeParse :: Either Error a -> Maybe a
-maybeParse = either (const Nothing) Just
