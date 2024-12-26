@@ -2,3 +2,6 @@ cradle:
   cabal:
     - path: "src/Main.hs"
       component: "x1:exe:x1"
+
+    - path: "src/Parser.hs"
+      component: "x1:exe:x1"
