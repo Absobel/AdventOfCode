@@ -16,7 +16,6 @@ type Coord = (Int, Int)
 
 uniq :: Ord a => [a] -> [a]
 uniq = map head . group . sort
--- uniq = foldr (\e acc -> if e `elem` acc then acc else e:acc) []
 
 ----------------
 
